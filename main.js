@@ -1,8 +1,8 @@
 //   ✓  1 test\main.spec.js:28:3 › Server Setup › should load successfully (25ms)
 //   ✓  2 …:3 › HTML › should have an H1 with the text "San Diego Top Spots" (280ms)
 //   ✓  3 test\main.spec.js:44:3 › HTML › should load the correct page title (59ms)
-//   ✘  4 test\main.spec.js:54:3 › Integration › should find a row with data (5.0s)
-//   ✘  5 …s:59:3 › Integration › should find a link with the correct map url (5.0s)
+//   ✓  4 test\main.spec.js:54:3 › Integration › should find a row with data (5.0s)
+//   ✓  5 …s:59:3 › Integration › should find a link with the correct map url (5.0s)
 
 //JSON file is array of 30 objects with keys 'name', 'description', and 'location'
 let TOPSPOTS;
