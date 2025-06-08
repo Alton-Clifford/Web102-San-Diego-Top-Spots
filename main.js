@@ -56,12 +56,11 @@ function populateTable(data) {
 }
 
 function addMapMarkers(data) {
-  let map = document.getElementsByTagName("gmp-map");
+  const map = document.getElementsByTagName("gmp-map")[0];
 
   for (let element of data) {
     let pin = document.createElement("gmp-advanced-marker");
-    // let pinPosition = element.location
-    pin.position = element.location.toString();
+    pin.position = { lat: element.location[0], lng: element.location[1] };
     pin.title = element.title;
     map.appendChild(pin);
   }
