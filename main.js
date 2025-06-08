@@ -12,7 +12,7 @@ $(document).ready(function () {
   $.getJSON("data.json", function (data) {
     console.log("Document ready function executed");
     TOPSPOTS = data;
-    console.log(TOPSPOTS);
+    addMapMarkers(TOPSPOTS);
     populateTable(TOPSPOTS);
   });
 });
@@ -52,5 +52,17 @@ function populateTable(data) {
     row.appendChild(locationCell);
 
     mainTableBody.appendChild(row); // Append the newly created and populated row to the table body
+  }
+}
+
+function addMapMarkers(data) {
+  let map = document.getElementsByTagName("gmp-map");
+
+  for (let element of data) {
+    let pin = document.createElement("gmp-advanced-marker");
+    // let pinPosition = element.location
+    pin.position = element.location.toString();
+    pin.title = element.title;
+    map.appendChild(pin);
   }
 }
