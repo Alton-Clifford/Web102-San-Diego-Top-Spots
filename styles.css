@@ -6,46 +6,116 @@ h1 {
 
 body {
     font-family: sans-serif;
+    background: linear-gradient(to bottom, rgb(255, 145, 0) 0%, #2196f3 100%);
+    min-height: 100vh;
+    position: relative;
+    color: #222;
+    font-weight: 600;
 }
 
+body > * {
+    position: relative;
+    z-index: 1;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url('sun-tropical-island-cartoon.jpg') center/cover no-repeat;
+    opacity: 0.1;/* Lower value = less visible sun */
+    pointer-events: none;
+    z-index: 0;
+}
+
+.input-field {
+    border: 6px solid;
+    border-image: linear-gradient(90deg, #00c3ff, #ffff1c, #ff00c8, #00c3ff) 1;
+    border-radius: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.5); /* Translucent white */
+    transition: box-shadow 0.3s, border-color 0.3s;
+    outline: none;
+    font-size: 1rem;
+    box-shadow: 0 0 8px rgba(0,195,255,0.2);
+}
+
+.input-field:hover {
+    box-shadow: 0 0 6px 4px #00c3ff, 0 0 32px 8px #ff00c8;
+    border-color: #ff00c8;
+    background: rgba(255, 255, 255, 0.7); /* Slightly less transparent on hover */
+}
+
+.sort-button {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    background-color: #a036ce; /* Bulma primary */
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 3px rgba(10,10,10,0.1);
+}
+
+.sort-button:hover,
+.sort-button:focus {
+    background-color: #8800c2; /* Bulma primary darkened */
+    box-shadow: 0 4px 8px rgba(0,209,178,0.2);
+    outline: none;
+}
+
+.caption {
+    text-align: center;
+    font-size: 1.5rem;
+}
 .container {
     display: flex; /* Establishes a flex container */
     flex-wrap: wrap; /* Allows items to wrap if not enough space */
     gap: 10px; /* Adds some space between the map and table */
 }
 
-.container > figure,
-.container > table {
-    flex: 1; /* Allows both items to grow and shrink as needed */
+.container > figure{
+    flex: 1;
     min-width: 300px; /* Ensures they don't get too squished */
     margin-inline-start: 10px;
     margin-inline-end: 10px;
 }
+.container > table {
+    flex: 2; /* Allows both items to grow and shrink as needed */
+    min-width: 300px; /* Ensures they don't get too squished */
+    z-index: 1
+}
 
-.caption {
+.centered-form {
+    width: 900px;
+    min-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
+    font-size: 1.5rem;
+    padding: 20px;
+}
+
+.centered-form form { /* is affecting all forms children */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Optional: center elements horizontally */
+    gap: 20px;           /* Space between elements */
 }
 
 #mainTable {
-  max-height: 900px; /* Set the maximum height */
-  overflow-y: auto;   /* Add a vertical scrollbar if content overflows */
-  display: block;     /* Ensure the max-height and overflow properties work correctly */
+    max-height: 900px; /* Set the maximum height */
+    overflow-y: auto;   /* Add a vertical scrollbar if content overflows */
+    display: block;     /* Ensure the max-height and overflow properties work correctly */
 }
 
 #mainTable thead th {
     position: sticky;
     top: 0;
-    background: white; /* Optional: ensures header is readable */
+    background: rgb(255, 167, 78);
     z-index: 1;        /* Keeps header above table rows */
+    font-weight: 900;
 }
-
-/* Optional: Style the table header to remain visible while scrolling
-#mainTable thead {
-  display: table-header-group;
-} */
-
-/*
-#mainTable tbody tr {
-  display: table-row;
-}
-*/

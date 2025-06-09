@@ -17,8 +17,9 @@ $(document).ready(function () {
 });
 
 //Called on document ready
-function populateTable(data) {
+function populateTable(data, showDistance = false) {
   const mainTableBody = document.getElementById("mainTablebody");
+  mainTableBody.innerHTML = ""; // Clear existing rows
 
   for (let element of data) {
     let row = document.createElement("tr"); // Create a new row for each element
@@ -43,7 +44,15 @@ function populateTable(data) {
     locationCell.appendChild(link);
     row.appendChild(locationCell);
 
-    mainTableBody.appendChild(row); // Append the newly created and populated row to the table body
+    if (showDistance) {
+      let distanceCell = document.createElement("td");
+      distanceCell.textContent = element.distance
+        ? element.distance + " miles"
+        : "";
+      row.appendChild(distanceCell);
+    }
+
+    mainTableBody.appendChild(row);
   }
 }
 
@@ -98,7 +107,8 @@ document
 
     addDistanceColumn();
     addDistancestoRows(userLat, userLong);
-    // sortByDistance();
+    sortByDistance();
+    addUserLocationMarker(userLat, userLong);
   });
 
 //Called on sort by distance click
@@ -131,6 +141,7 @@ function addDistancestoRows(userLat, userLong) {
   });
 }
 
+//Called by addDistancestoRows
 function addDistanceToRow(distance, rowIndex) {
   const mainTableBody = document.getElementById("mainTablebody");
   const topSpotRows = mainTableBody.getElementsByTagName("tr");
@@ -141,6 +152,32 @@ function addDistanceToRow(distance, rowIndex) {
   targetRowCells[DISTANCE_CELL].textContent = distance;
 }
 
-// function sortByDistance(){
+function sortByDistance() {
+  // Sort by distance (lowest to highest)
+  TOPSPOTS.sort((a, b) => a.distance - b.distance);
+  // Repopulate table with distance column
+  populateTable(TOPSPOTS, true);
+}
 
-// }
+//Called on sort by distance click
+function addUserLocationMarker(lat, lng) {
+  const map = document.getElementsByTagName("gmp-map")[0];
+  // Remove previous user marker if it exists
+  const existing = map.querySelector("#user-location-marker");
+  if (existing) {
+    map.removeChild(existing);
+  }
+  const pinProperties = new google.maps.marker.PinElement({
+    background: "#04C5FB",
+    borderColor: "purple",
+    glyphColor: "#f8ff00",
+  });
+
+  let userMarker = document.createElement("gmp-advanced-marker");
+  userMarker.position = { lat, lng };
+  userMarker.title = "Your Location";
+  userMarker.id = "user-location-marker"; // Set unique ID
+  userMarker.content = pinProperties.element;
+
+  map.appendChild(userMarker);
+}

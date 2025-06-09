@@ -7,21 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="styles.css"/>
     <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRlB4Itjnw2Y3_e5ovBxMGpqxpHftyeXw&libraries=maps,marker"
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&libraries=maps,marker"
     defer></script>
     <title>San Diego Top Spots</title>
 </head>
 
 <body>
     <h1> San Diego Top Spots</h1>
+
 <div class ="container">
-<figure>
-<gmp-map center="32.73,-117.1611" zoom="11.5" map-id="San_Diego" style="height: 900px;
+<figure class="flex-one-third">
+<gmp-map center="32.73,-117.1611" zoom="11.6" map-id="San_Diego" style="height: 900px;
  max-width:1200px"></gmp-map>
  <figcaption class="caption">These are <b>the</b> most bumpin spots in San Diego!</figcaption>
  </figure>
 
-<table id="mainTable">
+<table id="mainTable" class="flex-two-third">
     <thead>
         <tr id="TableHeaders">
             <th>Name</th>
@@ -36,12 +37,14 @@
 </table>
 </div>
 
+<div class="centered-form">
 <form>
-<label for="userInput">Input your location latitude and longitude to see your distance from each top spot. For reference, San Diego city enter is at 32.7157, -117.1611. </label><br>
-<input id="userInput" type="text" name="userInput"><br>
-<button id="userLocation" type="button">Sort by distance!</button>
+<label for="userInput">Input your location latitude and longitude to see your distance from each top spot. 
+    For reference, San Diego city enter is at 32.7157, -117.1611. </label>
+<input id="userInput" type="text" name="userInput" class="input-field" placeholder="Your lat, your long">
+<button id="userLocation" type="button" class="sort-button">Sort by distance!</button>
 </form>
-
+</div>
 
 <script src="jquery.min.js"></script>
 <script src="main.js"></script>
