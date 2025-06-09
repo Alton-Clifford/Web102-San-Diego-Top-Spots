@@ -14,14 +14,14 @@
 <body>
 <h1> San Diego Top Spots</h1>
 <figure>
-<gmp-map center="32.7157,-117" zoom="11.5" map-id="San_Diego" style="height: 600px;
- max-width:1200px"></gmp-map>
+<gmp-map center="32.7157,-117.1611" zoom="11.5" map-id="San_Diego" style="height: 1000px;
+ max-width:800px"></gmp-map>
  <figcaption>These are <b>the</b> most bumpin spots in San Diego!</figcaption>
  </figure>
 
 <table id="mainTable">
     <thead>
-        <tr>
+        <tr id="TableHeaders">
             <th>Name</th>
             <th>Description</th>
             <th>Link</th>
@@ -32,6 +32,13 @@
         
     </tbody>
 </table>
+
+<form>
+<label for="userInput">Input your location latitude and longitude to see your distance from each top spot. For reference, San Diego city enter is at 32.7157, -117.1611. </label><br>
+<input id="userInput" type="text" name="userInput"><br>
+<button id="userLocation" type="button">Sort by distance!</button>
+</form>
+
 
 <script src="jquery.min.js"></script>
 <script src="main.js"></script>

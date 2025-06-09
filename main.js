@@ -4,7 +4,6 @@
 //   ✓  4 test\main.spec.js:54:3 › Integration › should find a row with data (5.0s)
 //   ✓  5 …s:59:3 › Integration › should find a link with the correct map url (5.0s)
 
-//JSON file is array of 30 objects with keys 'name', 'description', and 'location'
 let TOPSPOTS;
 
 //Can also be written as $(function(){...});
@@ -17,14 +16,7 @@ $(document).ready(function () {
   });
 });
 
-// // Clear existing rows if any, except the header
-// if (mainTableBody) {
-//   mainTableBody.innerHTML = '';
-// } else {
-//   console.error("Could not find tbody in mainTable");
-//   return;
-// }
-
+//Called on document ready
 function populateTable(data) {
   const mainTableBody = document.getElementById("mainTablebody");
 
@@ -55,6 +47,7 @@ function populateTable(data) {
   }
 }
 
+//Called on document ready
 function addMapMarkers(data) {
   const map = document.getElementsByTagName("gmp-map")[0];
 
@@ -64,4 +57,76 @@ function addMapMarkers(data) {
     pin.title = element.title;
     map.appendChild(pin);
   }
+}
+
+//Called on sort by distance click
+function addDistanceColumn() {
+  let header = document.getElementById("TableHeaders");
+  if (!document.getElementById("distanceHeader")) {
+    let distanceColumn = document.createElement("th");
+    distanceColumn.id = "distanceHeader";
+    distanceColumn.textContent = "Distance from user";
+    header.appendChild(distanceColumn);
+  }
+
+  const mainTableBody = document.getElementById("mainTablebody");
+  const rows = mainTableBody.getElementsByTagName("tr");
+  for (let i = 0; i < rows.length; i++) {
+    // Avoid adding multiple distance cells if button is clicked multiple times
+    if (rows[i].children.length < 4) {
+      let distanceCell = document.createElement("td");
+      rows[i].appendChild(distanceCell);
+    }
+  }
+}
+
+function addDistanceToRow(distance, rowIndex) {
+  const mainTableBody = document.getElementById("mainTablebody");
+  const topSpotRows = mainTableBody.getElementsByTagName("tr");
+
+  const targetRow = topSpotRows[rowIndex];
+  const targetRowCells = targetRow.getElementsByTagName("td");
+  const DISTANCE_CELL = 3;
+  targetRowCells[DISTANCE_CELL].textContent = distance;
+}
+
+//Haversine Distance formula to calculate miles between two lat longs
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const toRad = (angle) => (angle * Math.PI) / 180;
+  const R = 3958.8; // miles
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return (R * c).toFixed(2) + " miles";
+}
+
+//Handler for user clicking Sort by distance!
+document
+  .getElementById("userLocation")
+  .addEventListener("click", function useUserInput() {
+    userLocation = document.getElementById("userInput").value;
+    if (userLocation === "") {
+      alert("Please enter a location.");
+      return;
+    }
+
+    console.log("User input:", userLocation); //ASK FOR lat long
+    [userLat, userLong] = userLocation.split(",").map(Number);
+
+    addDistanceColumn();
+    addDistancestoRows(userLat, userLong);
+  });
+
+function addDistancestoRows(userLat, userLong) {
+  TOPSPOTS.forEach((currentSpot, index) => {
+    [spotLat, spotLong] = currentSpot.location;
+    const distance = haversineDistance(userLat, userLong, spotLat, spotLong);
+    addDistanceToRow(distance, index);
+  });
 }
