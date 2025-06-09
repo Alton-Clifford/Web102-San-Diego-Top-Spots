@@ -1,0 +1,51 @@
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+.container {
+    display: flex; /* Establishes a flex container */
+    flex-wrap: wrap; /* Allows items to wrap if not enough space */
+    gap: 10px; /* Adds some space between the map and table */
+}
+
+.container > figure,
+.container > table {
+    flex: 1; /* Allows both items to grow and shrink as needed */
+    min-width: 300px; /* Ensures they don't get too squished */
+    margin-inline-start: 10px;
+    margin-inline-end: 10px;
+}
+
+.caption {
+    text-align: center;
+}
+
+#mainTable {
+  max-height: 900px; /* Set the maximum height */
+  overflow-y: auto;   /* Add a vertical scrollbar if content overflows */
+  display: block;     /* Ensure the max-height and overflow properties work correctly */
+}
+
+#mainTable thead th {
+    position: sticky;
+    top: 0;
+    background: white; /* Optional: ensures header is readable */
+    z-index: 1;        /* Keeps header above table rows */
+}
+
+/* Optional: Style the table header to remain visible while scrolling
+#mainTable thead {
+  display: table-header-group;
+} */
+
+/*
+#mainTable tbody tr {
+  display: table-row;
+}
+*/

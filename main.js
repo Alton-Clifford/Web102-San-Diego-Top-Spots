@@ -55,9 +55,51 @@ function addMapMarkers(data) {
     let pin = document.createElement("gmp-advanced-marker");
     pin.position = { lat: element.location[0], lng: element.location[1] };
     pin.title = element.title;
+
+    if (element.location && element.location.length === 2) {
+      const mapsUrl = `https://www.google.com/maps?q=${element.location[0]},${element.location[1]}`;
+      pin.addEventListener("click", () => {
+        window.open(mapsUrl, "_blank");
+      });
+    }
+
     map.appendChild(pin);
   }
 }
+
+//Haversine Distance formula to calculate miles between two lat longs
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const toRad = (angle) => (angle * Math.PI) / 180;
+  const R = 3958.8; // miles
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return (R * c).toFixed(2);
+}
+
+//Handler for user clicking Sort by distance!
+document
+  .getElementById("userLocation")
+  .addEventListener("click", function useUserInput() {
+    userLocation = document.getElementById("userInput").value;
+    if (userLocation === "") {
+      alert("Please enter a location.");
+      return;
+    }
+
+    console.log("User input:", userLocation); //ASK FOR lat long
+    [userLat, userLong] = userLocation.split(",").map(Number);
+
+    addDistanceColumn();
+    addDistancestoRows(userLat, userLong);
+    // sortByDistance();
+  });
 
 //Called on sort by distance click
 function addDistanceColumn() {
@@ -80,6 +122,15 @@ function addDistanceColumn() {
   }
 }
 
+function addDistancestoRows(userLat, userLong) {
+  TOPSPOTS.forEach((currentSpot, index) => {
+    [spotLat, spotLong] = currentSpot.location;
+    const distance = haversineDistance(userLat, userLong, spotLat, spotLong);
+    currentSpot.distance = parseFloat(distance);
+    addDistanceToRow(distance + " miles", index);
+  });
+}
+
 function addDistanceToRow(distance, rowIndex) {
   const mainTableBody = document.getElementById("mainTablebody");
   const topSpotRows = mainTableBody.getElementsByTagName("tr");
@@ -90,43 +141,6 @@ function addDistanceToRow(distance, rowIndex) {
   targetRowCells[DISTANCE_CELL].textContent = distance;
 }
 
-//Haversine Distance formula to calculate miles between two lat longs
-function haversineDistance(lat1, lon1, lat2, lon2) {
-  const toRad = (angle) => (angle * Math.PI) / 180;
-  const R = 3958.8; // miles
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) *
-      Math.cos(toRad(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return (R * c).toFixed(2) + " miles";
-}
+// function sortByDistance(){
 
-//Handler for user clicking Sort by distance!
-document
-  .getElementById("userLocation")
-  .addEventListener("click", function useUserInput() {
-    userLocation = document.getElementById("userInput").value;
-    if (userLocation === "") {
-      alert("Please enter a location.");
-      return;
-    }
-
-    console.log("User input:", userLocation); //ASK FOR lat long
-    [userLat, userLong] = userLocation.split(",").map(Number);
-
-    addDistanceColumn();
-    addDistancestoRows(userLat, userLong);
-  });
-
-function addDistancestoRows(userLat, userLong) {
-  TOPSPOTS.forEach((currentSpot, index) => {
-    [spotLat, spotLong] = currentSpot.location;
-    const distance = haversineDistance(userLat, userLong, spotLat, spotLong);
-    addDistanceToRow(distance, index);
-  });
-}
+// }
